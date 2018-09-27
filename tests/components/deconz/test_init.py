@@ -136,6 +136,7 @@ async def test_unload_entry(hass):
     entry.data = {'host': '1.2.3.4', 'port': 80, 'api_key': '1234567890ABCDEF'}
     entry.async_unload.return_value = mock_coro(True)
     deconzmock = Mock()
+    deconzmock.config.mac = 'mock-mac'
     deconzmock.async_load_parameters.return_value = mock_coro(True)
     deconzmock.sensors = {}
     with patch('pydeconz.DeconzSession', return_value=deconzmock):
