@@ -35,7 +35,7 @@ async def test_loading(hass, store):
 async def test_custom_encoder(hass):
     """Test we can save and load data."""
     class JSONEncoder(json.JSONEncoder):
-        """"Mock JSON encoder."""
+        """Mock JSON encoder."""
 
         def default(self, o):
             """Mock JSON encode method."""

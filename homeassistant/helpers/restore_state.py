@@ -27,15 +27,15 @@ STATE_DUMP_INTERVAL = timedelta(hours=1)
 
 @callback
 def async_setup(hass: HomeAssistant) -> None:
-    """Setup the event listeners for state restoration."""
+    """Set up the event listeners for state restoration."""
     @callback
     def async_add_dump_states_job(*args):
-        """Setup the restore state listeners."""
+        """Set up the restore state listeners."""
         hass.async_create_task(async_dump_states(hass))
 
     @callback
     def async_setup_restore_state(*args):
-        """Setup the restore state listeners."""
+        """Set up the restore state listeners."""
         # Dump the initial states now. This helps minimize the risk of having
         # old states loaded by overwritting the last states once home assistant
         # has started.
@@ -51,6 +51,7 @@ def async_setup(hass: HomeAssistant) -> None:
 
     hass.bus.async_listen_once(
         EVENT_HOMEASSISTANT_START, async_setup_restore_state)
+
 
 async def _load_restore_cache(hass: HomeAssistant) -> None:
     """Load the restore cache to be used by other components."""

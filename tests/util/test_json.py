@@ -81,7 +81,7 @@ class TestJSON(unittest.TestCase):
     def test_custom_encoder(self):
         """Test serializing with a custom encoder."""
         class MockJSONEncoder(JSONEncoder):
-            """"Mock JSON encoder."""
+            """Mock JSON encoder."""
 
             def default(self, o):
                 """Mock JSON encode method."""
