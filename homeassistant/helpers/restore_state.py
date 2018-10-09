@@ -1,9 +1,13 @@
 """Support for restoring entity states on startup."""
 import asyncio
 import logging
+from datetime import timedelta
 
 from homeassistant.core import HomeAssistant, CoreState, callback, State
-from homeassistant.const import EVENT_HOMEASSISTANT_START
+from homeassistant.const import (
+    EVENT_HOMEASSISTANT_START, EVENT_HOMEASSISTANT_STOP)
+from homeassistant.helpers.entity import Entity
+from homeassistant.helpers.event import async_track_time_interval
 from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers.json import JSONEncoder
 from homeassistant.helpers.storage import Store
@@ -17,8 +21,38 @@ _LOGGER = logging.getLogger(__name__)
 STORAGE_KEY = 'core.restore_state'
 STORAGE_VERSION = 1
 
+# How long between periodically saving the current states to disk
+STATE_DUMP_INTERVAL = timedelta(hours=1)
 
-async def _load_restore_cache(hass: HomeAssistant):
+
+@callback
+def async_setup(hass: HomeAssistant) -> None:
+    """Setup the event listeners for state restoration."""
+    @callback
+    def async_add_dump_states_job(*args):
+        """Setup the restore state listeners."""
+        hass.async_create_task(async_dump_states(hass))
+
+    @callback
+    def async_setup_restore_state(*args):
+        """Setup the restore state listeners."""
+        # Dump the initial states now. This helps minimize the risk of having
+        # old states loaded by overwritting the last states once home assistant
+        # has started.
+        async_add_dump_states_job()
+
+        # Dump states periodically
+        async_track_time_interval(
+            hass, async_add_dump_states_job, STATE_DUMP_INTERVAL)
+
+        # Dump states when stopping hass
+        hass.bus.async_listen_once(
+            EVENT_HOMEASSISTANT_STOP, async_add_dump_states_job)
+
+    hass.bus.async_listen_once(
+        EVENT_HOMEASSISTANT_START, async_setup_restore_state)
+
+async def _load_restore_cache(hass: HomeAssistant) -> None:
     """Load the restore cache to be used by other components."""
     @callback
     def remove_cache(event):
@@ -50,7 +84,7 @@ def _get_restore_state_store(hass: HomeAssistant) -> Store:
 
 
 @bind_hass
-async def async_get_last_state(hass, entity_id: str):
+async def async_get_last_state(hass: HomeAssistant, entity_id: str) -> State:
     """Restore state."""
     if DATA_RESTORE_CACHE in hass.data:
         return hass.data[DATA_RESTORE_CACHE].get(entity_id)
@@ -73,7 +107,7 @@ async def async_get_last_state(hass, entity_id: str):
     return hass.data.get(DATA_RESTORE_CACHE, {}).get(entity_id)
 
 
-async def async_restore_state(entity, extract_info):
+async def async_restore_state(entity: Entity, extract_info: dict) -> None:
     """Call entity.async_restore_state with cached info."""
     if entity.hass.state not in (CoreState.starting, CoreState.not_running):
         _LOGGER.debug("Not restoring state for %s: Hass is not starting: %s",

@@ -8,7 +8,6 @@ Component design guidelines:
 - Each component should publish services only under its own domain.
 """
 import asyncio
-from datetime import timedelta
 import itertools as it
 import logging
 from typing import Awaitable
@@ -16,16 +15,13 @@ from typing import Awaitable
 import voluptuous as vol
 
 import homeassistant.core as ha
-from homeassistant.core import callback
 import homeassistant.config as conf_util
 from homeassistant.exceptions import HomeAssistantError
-from homeassistant.helpers.event import async_track_time_interval
-from homeassistant.helpers.restore_state import async_dump_states
+import homeassistant.helpers.restore_state
 from homeassistant.helpers.service import extract_entity_ids
 from homeassistant.helpers import intent
 from homeassistant.const import (
-    ATTR_ENTITY_ID, EVENT_HOMEASSISTANT_START, EVENT_HOMEASSISTANT_STOP,
-    SERVICE_TURN_ON, SERVICE_TURN_OFF, SERVICE_TOGGLE,
+    ATTR_ENTITY_ID, SERVICE_TURN_ON, SERVICE_TURN_OFF, SERVICE_TOGGLE,
     SERVICE_HOMEASSISTANT_STOP, SERVICE_HOMEASSISTANT_RESTART,
     RESTART_EXIT_CODE)
 from homeassistant.helpers import config_validation as cv
@@ -38,9 +34,6 @@ SERVICE_UPDATE_ENTITY = 'update_entity'
 SCHEMA_UPDATE_ENTITY = vol.Schema({
     ATTR_ENTITY_ID: cv.entity_id
 })
-
-# How long between periodically saving the current states to disk
-STATE_DUMP_INTERVAL = timedelta(hours=1)
 
 
 def is_on(hass, entity_id=None):
@@ -177,27 +170,6 @@ async def async_setup(hass: ha.HomeAssistant, config: dict) -> Awaitable[bool]:
     hass.services.async_register(
         ha.DOMAIN, SERVICE_RELOAD_CORE_CONFIG, async_handle_reload_config)
 
-    @callback
-    def async_add_dump_states_job(*args):
-        """Setup the restore state listeners."""
-        # Dump the initial states now
-        hass.async_add_job(async_dump_states(hass))
-
-    @callback
-    def async_setup_restore_state(*args):
-        """Setup the restore state listeners."""
-        # Dump the initial states now
-        async_add_dump_states_job()
-
-        # Dump states periodically
-        async_track_time_interval(
-            hass, async_add_dump_states_job, STATE_DUMP_INTERVAL)
-
-        # Dump states when stopping hass
-        hass.bus.async_listen_once(
-            EVENT_HOMEASSISTANT_STOP, async_add_dump_states_job)
-
-    hass.bus.async_listen_once(
-        EVENT_HOMEASSISTANT_START, async_setup_restore_state)
+    homeassistant.helpers.restore_state.async_setup(hass)
 
     return True
