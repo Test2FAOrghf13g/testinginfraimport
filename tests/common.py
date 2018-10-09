@@ -839,9 +839,10 @@ def mock_storage(data=None):
 
     def mock_write_data(store, path, data_to_write):
         """Mock version of write data."""
-        # To ensure that the data can be serialized
         _LOGGER.info('Writing data to %s: %s', store.key, data_to_write)
-        data[store.key] = json.loads(json.dumps(data_to_write))
+        # To ensure that the data can be serialized
+        data[store.key] = json.loads(json.dumps(
+            data_to_write, cls=store._encoder))
 
     with patch('homeassistant.helpers.storage.Store._async_load',
                side_effect=mock_async_load, autospec=True), \
