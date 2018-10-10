@@ -22,7 +22,7 @@ STORAGE_KEY = 'core.restore_state'
 STORAGE_VERSION = 1
 
 # How long between periodically saving the current states to disk
-STATE_DUMP_INTERVAL = timedelta(hours=1)
+STATE_DUMP_INTERVAL = timedelta(minutes=15)
 
 
 @callback
