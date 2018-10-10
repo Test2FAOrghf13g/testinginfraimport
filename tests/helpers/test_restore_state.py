@@ -1,11 +1,10 @@
 """The tests for the Restore component."""
 from unittest.mock import patch
 
-from homeassistant.const import EVENT_HOMEASSISTANT_START
 from homeassistant.core import CoreState, State
 from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers.restore_state import (
-    _get_restore_state_store, async_get_last_state, DATA_RESTORE_CACHE)
+    _get_restore_state_store, async_get_last_state)
 
 
 async def test_caching_data(hass):
@@ -23,18 +22,9 @@ async def test_caching_data(hass):
 
     state = await async_get_last_state(hass, 'input_boolean.b1')
 
-    assert DATA_RESTORE_CACHE in hass.data
-    assert hass.data[DATA_RESTORE_CACHE] == {st.entity_id: st for st in states}
-
     assert state is not None
     assert state.entity_id == 'input_boolean.b1'
     assert state.state == 'on'
-
-    hass.bus.async_fire(EVENT_HOMEASSISTANT_START)
-
-    await hass.async_block_till_done()
-
-    assert DATA_RESTORE_CACHE not in hass.data
 
 
 async def test_hass_running(hass):

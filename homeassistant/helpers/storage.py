@@ -3,7 +3,7 @@ import asyncio
 from json import JSONEncoder
 import logging
 import os
-from typing import Dict, Optional, Callable, Any
+from typing import Dict, List, Optional, Callable, Union
 
 from homeassistant.const import EVENT_HOMEASSISTANT_STOP
 from homeassistant.core import callback
@@ -66,7 +66,7 @@ class Store:
         """Return the config path."""
         return self.hass.config.path(STORAGE_DIR, self.key)
 
-    async def async_load(self) -> Optional[Dict[str, Any]]:
+    async def async_load(self) -> Optional[Union[Dict, List]]:
         """Load data.
 
         If the expected version does not match the given version, the migrate
@@ -106,7 +106,7 @@ class Store:
         self._load_task = None
         return stored
 
-    async def async_save(self, data):
+    async def async_save(self, data: Union[Dict, List]) -> None:
         """Save data."""
         self._data = {
             'version': self.version,

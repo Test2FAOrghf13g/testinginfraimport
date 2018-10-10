@@ -1,21 +1,20 @@
 """Support for restoring entity states on startup."""
-import asyncio
 import logging
 from datetime import timedelta
+from typing import Dict, Optional
 
 from homeassistant.core import HomeAssistant, CoreState, callback, State
 from homeassistant.const import (
     EVENT_HOMEASSISTANT_START, EVENT_HOMEASSISTANT_STOP)
-from homeassistant.helpers.entity import Entity
 from homeassistant.helpers.event import async_track_time_interval
 from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers.json import JSONEncoder
 from homeassistant.helpers.storage import Store
 from homeassistant.loader import bind_hass
 
-DATA_RESTORE_CACHE = 'restore_state_cache'
 DATA_RESTORE_STORAGE = 'restore_state_store'
-_LOCK = 'restore_lock'
+DATA_RESTORE_CACHE_TASK = 'restore_state_store_task'
+
 _LOGGER = logging.getLogger(__name__)
 
 STORAGE_KEY = 'core.restore_state'
@@ -53,26 +52,30 @@ def async_setup(hass: HomeAssistant) -> None:
         EVENT_HOMEASSISTANT_START, async_setup_restore_state)
 
 
-async def _load_restore_cache(hass: HomeAssistant) -> None:
-    """Load the restore cache to be used by other components."""
-    @callback
-    def remove_cache(event):
-        """Remove the states cache."""
-        hass.data.pop(DATA_RESTORE_CACHE, None)
+async def async_get_restore_cache(hass: HomeAssistant) -> Dict[str, State]:
+    """Get the restore cache for loading previous states."""
+    task = hass.data.get(DATA_RESTORE_CACHE_TASK)
 
-    hass.bus.async_listen_once(EVENT_HOMEASSISTANT_START, remove_cache)
+    if task is None:
+        async def _load_restore_cache(hass: HomeAssistant) -> Dict[str, State]:
+            """Load the restore cache to be used by other components."""
+            store = _get_restore_state_store(hass)
 
-    store = _get_restore_state_store(hass)
+            states = await store.async_load()
+            if states is None:
+                _LOGGER.debug('Not creating cache - no saved states found')
+                return {}
 
-    states = await store.async_load()
-    if states is None:
-        _LOGGER.debug('Not creating cache - no saved states found')
-        hass.data[DATA_RESTORE_CACHE] = {}
-        return
+            cache = {
+                state['entity_id']: State.from_dict(state) for state in states}
+            _LOGGER.debug('Created cache with %s', list(cache))
 
-    hass.data[DATA_RESTORE_CACHE] = {
-        state['entity_id']: State.from_dict(state) for state in states}
-    _LOGGER.debug('Created cache with %s', list(hass.data[DATA_RESTORE_CACHE]))
+            return cache
+
+        task = hass.data[DATA_RESTORE_CACHE_TASK] = hass.async_create_task(
+            _load_restore_cache(hass))
+
+    return await task
 
 
 def _get_restore_state_store(hass: HomeAssistant) -> Store:
@@ -85,42 +88,17 @@ def _get_restore_state_store(hass: HomeAssistant) -> Store:
 
 
 @bind_hass
-async def async_get_last_state(hass: HomeAssistant, entity_id: str) -> State:
+async def async_get_last_state(
+        hass: HomeAssistant, entity_id: str) -> Optional[State]:
     """Restore state."""
-    if DATA_RESTORE_CACHE in hass.data:
-        return hass.data[DATA_RESTORE_CACHE].get(entity_id)
-
     if hass.state not in (CoreState.starting, CoreState.not_running):
         _LOGGER.debug("Cache for %s can only be loaded during startup, not %s",
                       entity_id, hass.state)
         return None
 
-    if _LOCK not in hass.data:
-        hass.data[_LOCK] = asyncio.Lock(loop=hass.loop)
+    cache = await async_get_restore_cache(hass)
 
-    async with hass.data[_LOCK]:
-        try:
-            if DATA_RESTORE_CACHE not in hass.data:
-                await _load_restore_cache(hass)
-        except HomeAssistantError:
-            return None
-
-    return hass.data.get(DATA_RESTORE_CACHE, {}).get(entity_id)
-
-
-async def async_restore_state(entity: Entity, extract_info: dict) -> None:
-    """Call entity.async_restore_state with cached info."""
-    if entity.hass.state not in (CoreState.starting, CoreState.not_running):
-        _LOGGER.debug("Not restoring state for %s: Hass is not starting: %s",
-                      entity.entity_id, entity.hass.state)
-        return
-
-    state = await async_get_last_state(entity.hass, entity.entity_id)
-
-    if not state:
-        return
-
-    await entity.async_restore_state(**extract_info(state))
+    return cache.get(entity_id)
 
 
 @bind_hass
