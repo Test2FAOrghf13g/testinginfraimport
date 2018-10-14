@@ -11,9 +11,8 @@ import voluptuous as vol
 import homeassistant.helpers.config_validation as cv
 from homeassistant.const import (
     ATTR_ENTITY_ID, ATTR_UNIT_OF_MEASUREMENT, CONF_ICON, CONF_NAME, CONF_MODE)
-from homeassistant.helpers.entity import Entity
 from homeassistant.helpers.entity_component import EntityComponent
-from homeassistant.helpers.restore_state import async_get_last_state
+from homeassistant.helpers.restore_state import RestoreEntity
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -122,7 +121,7 @@ async def async_setup(hass, config):
     return True
 
 
-class InputNumber(Entity):
+class InputNumber(RestoreEntity):
     """Representation of a slider."""
 
     def __init__(self, object_id, name, initial, minimum, maximum, step, icon,
@@ -179,7 +178,7 @@ class InputNumber(Entity):
         if self._current_value is not None:
             return
 
-        state = await async_get_last_state(self.hass, self.entity_id)
+        state = await self.async_get_last_state()
         value = state and float(state.state)
 
         # Check against None because value can be 0

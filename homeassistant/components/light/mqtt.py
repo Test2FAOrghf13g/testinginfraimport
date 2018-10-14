@@ -23,7 +23,7 @@ from homeassistant.components.mqtt import (
     CONF_PAYLOAD_AVAILABLE, CONF_PAYLOAD_NOT_AVAILABLE, CONF_QOS, CONF_RETAIN,
     CONF_STATE_TOPIC, MqttAvailability, MqttDiscoveryUpdate)
 from homeassistant.components.mqtt.discovery import MQTT_DISCOVERY_NEW
-from homeassistant.helpers.restore_state import async_get_last_state
+from homeassistant.helpers.restore_state import RestoreEntity
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
 from homeassistant.helpers.typing import HomeAssistantType, ConfigType
 import homeassistant.helpers.config_validation as cv
@@ -188,7 +188,7 @@ async def _async_setup_entity(hass, config, async_add_entities,
     )])
 
 
-class MqttLight(MqttAvailability, MqttDiscoveryUpdate, Light):
+class MqttLight(MqttAvailability, MqttDiscoveryUpdate, Light, RestoreEntity):
     """Representation of a MQTT light."""
 
     def __init__(self, name, unique_id, effect_list, topic, templates,
@@ -269,7 +269,7 @@ class MqttLight(MqttAvailability, MqttDiscoveryUpdate, Light):
                 tpl.hass = self.hass
                 templates[key] = tpl.async_render_with_possible_json_value
 
-        last_state = await async_get_last_state(self.hass, self.entity_id)
+        last_state = await self.async_get_last_state()
 
         @callback
         def state_received(topic, payload, qos):

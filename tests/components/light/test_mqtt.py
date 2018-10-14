@@ -573,7 +573,8 @@ class TestLightMQTT(unittest.TestCase):
                                                    'effect': 'random',
                                                    'color_temp': 100,
                                                    'white_value': 50})
-        with patch('homeassistant.components.light.mqtt.async_get_last_state',
+        with patch('homeassistant.components.light.mqtt.RestoreEntity'
+                   '.async_get_last_state',
                    return_value=mock_coro(fake_state)):
             with assert_setup_component(1, light.DOMAIN):
                 assert setup_component(self.hass, light.DOMAIN, config)
