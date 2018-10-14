@@ -17,7 +17,6 @@ import voluptuous as vol
 import homeassistant.core as ha
 import homeassistant.config as conf_util
 from homeassistant.exceptions import HomeAssistantError
-import homeassistant.helpers.restore_state
 from homeassistant.helpers.service import extract_entity_ids
 from homeassistant.helpers import intent
 from homeassistant.const import (
@@ -169,7 +168,5 @@ async def async_setup(hass: ha.HomeAssistant, config: dict) -> Awaitable[bool]:
 
     hass.services.async_register(
         ha.DOMAIN, SERVICE_RELOAD_CORE_CONFIG, async_handle_reload_config)
-
-    homeassistant.helpers.restore_state.async_setup(hass)
 
     return True
