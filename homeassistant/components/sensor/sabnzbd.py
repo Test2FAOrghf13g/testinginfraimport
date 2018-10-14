@@ -44,6 +44,7 @@ class SabnzbdSensor(Entity):
 
     async def async_added_to_hass(self):
         """Call when entity about to be added to hass."""
+        await super().async_added_to_hass()
         async_dispatcher_connect(self.hass, SIGNAL_SABNZBD_UPDATED,
                                  self.update_state)
 

@@ -119,6 +119,8 @@ class BayesianBinarySensor(BinarySensorDevice):
 
     async def async_added_to_hass(self):
         """Call when entity about to be added."""
+        await super().async_added_to_hass()
+
         @callback
         def async_threshold_sensor_state_listener(entity, old_state,
                                                   new_state):

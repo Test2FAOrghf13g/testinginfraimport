@@ -228,5 +228,6 @@ class ElkEntity(Entity):
 
     async def async_added_to_hass(self):
         """Register callback for ElkM1 changes and update entity state."""
+        await super().async_added_to_hass()
         self._element.add_callback(self._element_callback)
         self._element_callback(self._element, {})

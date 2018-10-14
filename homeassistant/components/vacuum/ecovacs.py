@@ -55,6 +55,7 @@ class EcovacsVacuum(VacuumDevice):
 
     async def async_added_to_hass(self) -> None:
         """Set up the event listeners now that hass is ready."""
+        await super().async_added_to_hass()
         self.device.statusEvents.subscribe(lambda _:
                                            self.schedule_update_ha_state())
         self.device.batteryEvents.subscribe(lambda _:

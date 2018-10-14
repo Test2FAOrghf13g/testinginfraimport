@@ -227,6 +227,7 @@ class AutomationEntity(ToggleEntity):
 
     async def async_added_to_hass(self) -> None:
         """Startup with initial state or previous state."""
+        await super().async_added_to_hass()
         if self._initial_state is not None:
             enable_automation = self._initial_state
             _LOGGER.debug("Automation %s initial state %s from config "

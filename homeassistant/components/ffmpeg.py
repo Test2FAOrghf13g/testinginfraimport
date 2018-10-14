@@ -143,6 +143,7 @@ class FFmpegBase(Entity):
 
         This method is a coroutine.
         """
+        await super().async_added_to_hass()
         async_dispatcher_connect(
             self.hass, SIGNAL_FFMPEG_START, self._async_start_ffmpeg)
         async_dispatcher_connect(

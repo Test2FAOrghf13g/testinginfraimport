@@ -128,6 +128,7 @@ class Counter(Entity):
 
     async def async_added_to_hass(self):
         """Call when entity about to be added to Home Assistant."""
+        await super().async_added_to_hass()
         # __init__ will set self._state to self._initial, only override
         # if needed.
         if self._restore:

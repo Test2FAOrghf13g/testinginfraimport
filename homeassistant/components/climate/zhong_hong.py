@@ -97,6 +97,7 @@ class ZhongHongClimate(ClimateDevice):
 
     async def async_added_to_hass(self):
         """Register callbacks."""
+        await super().async_added_to_hass()
         self._device.register_update_callback(self._after_update)
         self.is_initialized = True
         async_dispatcher_send(self.hass, SIGNAL_DEVICE_ADDED)

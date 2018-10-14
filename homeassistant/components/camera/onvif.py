@@ -185,6 +185,7 @@ class ONVIFHassCamera(Camera):
 
     async def async_added_to_hass(self):
         """Handle entity addition to hass."""
+        await super().async_added_to_hass()
         if ONVIF_DATA not in self.hass.data:
             self.hass.data[ONVIF_DATA] = {}
             self.hass.data[ONVIF_DATA][ENTITIES] = []

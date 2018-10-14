@@ -146,6 +146,7 @@ class RadioThermostat(ClimateDevice):
 
     async def async_added_to_hass(self):
         """Register callbacks."""
+        await super().async_added_to_hass()
         # Set the time on the device.  This shouldn't be in the
         # constructor because it's a network call.  We can't put it in
         # update() because calling it will clear any temporary mode or

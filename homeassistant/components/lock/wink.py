@@ -132,6 +132,7 @@ class WinkLockDevice(WinkDevice, LockDevice):
 
     async def async_added_to_hass(self):
         """Call when entity is added to hass."""
+        await super().async_added_to_hass()
         self.hass.data[DOMAIN]['entities']['lock'].append(self)
 
     @property

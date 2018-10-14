@@ -71,6 +71,7 @@ class ArloBaseStation(AlarmControlPanel):
 
     async def async_added_to_hass(self):
         """Register callbacks."""
+        await super().async_added_to_hass()
         async_dispatcher_connect(
             self.hass, SIGNAL_UPDATE_ARLO, self._update_callback)
 

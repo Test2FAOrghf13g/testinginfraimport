@@ -68,6 +68,7 @@ class TradfriGroup(Light):
 
     async def async_added_to_hass(self):
         """Start thread when added to hass."""
+        await super().async_added_to_hass()
         self._async_start_observe()
 
     @property
@@ -199,6 +200,7 @@ class TradfriLight(Light):
 
     async def async_added_to_hass(self):
         """Start thread when added to hass."""
+        await super().async_added_to_hass()
         self._async_start_observe()
 
     @property

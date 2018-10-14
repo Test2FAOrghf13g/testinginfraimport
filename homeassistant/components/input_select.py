@@ -129,6 +129,7 @@ class InputSelect(Entity):
 
     async def async_added_to_hass(self):
         """Run when entity about to be added."""
+        await super().async_added_to_hass()
         if self._current_option is not None:
             return
 

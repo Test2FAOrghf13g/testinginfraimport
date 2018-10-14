@@ -70,6 +70,7 @@ class LutronDevice(Entity):
 
     async def async_added_to_hass(self):
         """Register callbacks."""
+        await super().async_added_to_hass()
         self.hass.async_add_job(
             self._controller.subscribe, self._lutron_device,
             self._update_callback

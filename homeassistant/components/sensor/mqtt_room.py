@@ -81,6 +81,8 @@ class MQTTRoomSensor(Entity):
 
     async def async_added_to_hass(self):
         """Subscribe to MQTT events."""
+        await super().async_added_to_hass()
+
         @callback
         def update_state(device_id, room, distance):
             """Update the sensor state."""

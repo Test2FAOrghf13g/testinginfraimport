@@ -233,6 +233,7 @@ class XiaomiDevice(Entity):
 
     async def async_added_to_hass(self):
         """Start unavailability tracking."""
+        await super().async_added_to_hass()
         self._xiaomi_hub.callbacks[self._sid].append(self._add_push_data_job)
         self._async_track_unavailable()
 

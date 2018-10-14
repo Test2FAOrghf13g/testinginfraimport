@@ -70,6 +70,8 @@ class LightGroup(light.Light):
 
     async def async_added_to_hass(self) -> None:
         """Register callbacks."""
+        await super().async_added_to_hass()
+
         @callback
         def async_state_changed_listener(entity_id: str, old_state: State,
                                          new_state: State):

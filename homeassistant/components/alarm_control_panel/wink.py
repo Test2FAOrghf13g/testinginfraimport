@@ -39,6 +39,7 @@ class WinkCameraDevice(WinkDevice, alarm.AlarmControlPanel):
 
     async def async_added_to_hass(self):
         """Call when entity is added to hass."""
+        await super().async_added_to_hass()
         self.hass.data[DOMAIN]['entities']['alarm_control_panel'].append(self)
 
     @property

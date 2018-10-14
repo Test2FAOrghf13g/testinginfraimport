@@ -189,6 +189,7 @@ class LimitlessLEDGroup(Light):
 
     async def async_added_to_hass(self):
         """Handle entity about to be added to hass event."""
+        await super().async_added_to_hass()
         last_state = await async_get_last_state(self.hass, self.entity_id)
         if last_state:
             self._is_on = (last_state.state == STATE_ON)

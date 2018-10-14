@@ -111,6 +111,8 @@ class NestThermostat(ClimateDevice):
 
     async def async_added_to_hass(self):
         """Register update signal handler."""
+        await super().async_added_to_hass()
+
         async def async_update_state():
             """Update device state."""
             await self.async_update_ha_state(True)

@@ -87,6 +87,7 @@ class UpnpSensor(Entity):
 
     async def async_added_to_hass(self):
         """Subscribe to sensors events."""
+        await super().async_added_to_hass()
         async_dispatcher_connect(self.hass,
                                  SIGNAL_REMOVE_SENSOR,
                                  self._upnp_remove_sensor)

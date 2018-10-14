@@ -117,6 +117,7 @@ class InputBoolean(ToggleEntity):
     async def async_added_to_hass(self):
         """Call when entity about to be added to hass."""
         # If not None, we got an initial value.
+        await super().async_added_to_hass()
         if self._state is not None:
             return
 

@@ -102,6 +102,7 @@ class WinkBinarySensorDevice(WinkDevice, BinarySensorDevice):
 
     async def async_added_to_hass(self):
         """Call when entity is added to hass."""
+        await super().async_added_to_hass()
         self.hass.data[DOMAIN]['entities']['binary_sensor'].append(self)
 
     @property

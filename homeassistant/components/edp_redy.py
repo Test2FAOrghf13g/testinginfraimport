@@ -91,6 +91,7 @@ class EdpRedyDevice(Entity):
 
     async def async_added_to_hass(self):
         """Subscribe to the data updates topic."""
+        await super().async_added_to_hass()
         dispatcher.async_dispatcher_connect(
             self.hass, DATA_UPDATE_TOPIC, self._data_updated)
 

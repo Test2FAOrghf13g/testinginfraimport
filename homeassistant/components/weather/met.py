@@ -75,6 +75,7 @@ class MetWeather(WeatherEntity):
 
     async def async_added_to_hass(self):
         """Start fetching data."""
+        await super().async_added_to_hass()
         await self._fetch_data()
         async_track_utc_time_change(self.hass, self._update,
                                     minute=31, second=0)

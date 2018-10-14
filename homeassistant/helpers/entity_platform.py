@@ -348,8 +348,7 @@ class EntityPlatform:
         self.entities[entity.entity_id] = entity
         component_entities.add(entity.entity_id)
 
-        if hasattr(entity, 'async_added_to_hass'):
-            await entity.async_added_to_hass()
+        await entity.async_added_to_hass()
 
         await entity.async_update_ha_state()
 

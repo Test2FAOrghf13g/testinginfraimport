@@ -139,6 +139,8 @@ class SensorTrend(BinarySensorDevice):
 
     async def async_added_to_hass(self):
         """Complete device setup after being added to hass."""
+        await super().async_added_to_hass()
+
         @callback
         def trend_sensor_state_listener(entity, old_state, new_state):
             """Handle state changes on the observed device."""

@@ -65,6 +65,7 @@ class AlarmDecoderBinarySensor(BinarySensorDevice):
 
     async def async_added_to_hass(self):
         """Register callbacks."""
+        await super().async_added_to_hass()
         self.hass.helpers.dispatcher.async_dispatcher_connect(
             SIGNAL_ZONE_FAULT, self._fault_callback)
 

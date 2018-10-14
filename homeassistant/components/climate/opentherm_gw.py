@@ -50,6 +50,7 @@ class OpenThermGateway(ClimateDevice):
 
     async def async_added_to_hass(self):
         """Connect to the OpenTherm Gateway device."""
+        await super().async_added_to_hass()
         _LOGGER.debug("Added device %s", self.friendly_name)
         async_dispatcher_connect(self.hass, SIGNAL_OPENTHERM_GW_UPDATE,
                                  self.receive_report)

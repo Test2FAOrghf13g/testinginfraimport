@@ -39,6 +39,7 @@ class SatelIntegraAlarmPanel(alarm.AlarmControlPanel):
 
     async def async_added_to_hass(self):
         """Register callbacks."""
+        await super().async_added_to_hass()
         async_dispatcher_connect(
             self.hass, SIGNAL_PANEL_MESSAGE, self._message_callback)
 

@@ -415,6 +415,7 @@ class ISYDevice(Entity):
 
     async def async_added_to_hass(self) -> None:
         """Subscribe to the node change events."""
+        await super().async_added_to_hass()
         self._change_handler = self._node.status.subscribe(
             'changed', self.on_update)
 

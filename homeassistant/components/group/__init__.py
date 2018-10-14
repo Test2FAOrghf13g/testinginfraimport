@@ -502,6 +502,7 @@ class Group(Entity):
 
     async def async_added_to_hass(self):
         """Handle addition to HASS."""
+        await super().async_added_to_hass()
         if self.tracking:
             self.async_start()
 

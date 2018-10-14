@@ -53,6 +53,7 @@ class SpcAlarm(alarm.AlarmControlPanel):
 
     async def async_added_to_hass(self):
         """Call for adding new entities."""
+        await super().async_added_to_hass()
         async_dispatcher_connect(self.hass,
                                  SIGNAL_UPDATE_ALARM.format(self._area.id),
                                  self._update_callback)

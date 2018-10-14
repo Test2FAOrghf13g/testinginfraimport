@@ -61,6 +61,7 @@ class DeconzSensor(Entity):
 
     async def async_added_to_hass(self):
         """Subscribe to sensors events."""
+        await super().async_added_to_hass()
         self._sensor.register_async_callback(self.async_update_callback)
         self.hass.data[DATA_DECONZ_ID][self.entity_id] = self._sensor.deconz_id
 
@@ -170,6 +171,7 @@ class DeconzBattery(Entity):
 
     async def async_added_to_hass(self):
         """Subscribe to sensors events."""
+        await super().async_added_to_hass()
         self._sensor.register_async_callback(self.async_update_callback)
         self.hass.data[DATA_DECONZ_ID][self.entity_id] = self._sensor.deconz_id
 

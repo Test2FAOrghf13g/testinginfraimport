@@ -143,6 +143,8 @@ class MediaroomDevice(MediaPlayerDevice):
 
     async def async_added_to_hass(self):
         """Retrieve latest state."""
+        await super().async_added_to_hass()
+
         async def async_notify_received(notify):
             """Process STB state from NOTIFY message."""
             stb_state = self.stb.notify_callback(notify)

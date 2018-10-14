@@ -280,6 +280,8 @@ class TemplateFan(FanEntity):
 
     async def async_added_to_hass(self):
         """Register callbacks."""
+        await super().async_added_to_hass()
+
         @callback
         def template_fan_state_listener(entity, old_state, new_state):
             """Handle target device state changes."""

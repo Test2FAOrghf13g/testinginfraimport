@@ -77,6 +77,7 @@ class RainMachineBinarySensor(RainMachineEntity, BinarySensorDevice):
 
     async def async_added_to_hass(self):
         """Register callbacks."""
+        await super().async_added_to_hass()
         async_dispatcher_connect(
             self.hass, SENSOR_UPDATE_TOPIC, self._update_data)
 

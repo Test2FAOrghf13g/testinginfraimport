@@ -157,6 +157,7 @@ class InputText(Entity):
 
     async def async_added_to_hass(self):
         """Run when entity about to be added to hass."""
+        await super().async_added_to_hass()
         if self._current_value is not None:
             return
 

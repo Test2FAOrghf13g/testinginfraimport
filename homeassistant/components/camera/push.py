@@ -130,6 +130,7 @@ class PushCamera(Camera):
 
     async def async_added_to_hass(self):
         """Call when entity is added to hass."""
+        await super().async_added_to_hass()
         self.hass.data[PUSH_CAMERA_DATA][self.entity_id] = self
 
     @property

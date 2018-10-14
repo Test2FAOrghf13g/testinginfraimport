@@ -148,6 +148,7 @@ class GenericThermostat(ClimateDevice):
 
     async def async_added_to_hass(self):
         """Run when entity about to be added."""
+        await super().async_added_to_hass()
         # Check If we have an old state
         old_state = await async_get_last_state(self.hass, self.entity_id)
         if old_state is not None:

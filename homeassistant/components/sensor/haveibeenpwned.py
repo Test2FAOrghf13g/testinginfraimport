@@ -91,6 +91,7 @@ class HaveIBeenPwnedSensor(Entity):
 
     async def async_added_to_hass(self):
         """Get initial data."""
+        await super().async_added_to_hass()
         # To make sure we get initial data for the sensors ignoring the normal
         # throttle of 15 minutes but using an update throttle of 5 seconds
         self.hass.async_add_executor_job(self.update_nothrottle)

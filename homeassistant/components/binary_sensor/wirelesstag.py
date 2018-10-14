@@ -105,6 +105,7 @@ class WirelessTagBinarySensor(WirelessTagBaseSensor, BinarySensorDevice):
 
     async def async_added_to_hass(self):
         """Register callbacks."""
+        await super().async_added_to_hass()
         tag_id = self.tag_id
         event_type = self.device_class
         mac = self.tag_manager_mac

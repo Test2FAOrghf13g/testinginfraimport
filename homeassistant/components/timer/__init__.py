@@ -142,6 +142,7 @@ class Timer(Entity):
 
     async def async_added_to_hass(self):
         """Call when entity is about to be added to Home Assistant."""
+        await super().async_added_to_hass()
         # If not None, we got an initial value.
         if self._state is not None:
             return

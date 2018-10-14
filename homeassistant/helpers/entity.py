@@ -388,6 +388,9 @@ class Entity:
 
         self.hass.async_create_task(readd())
 
+    async def async_added_to_hass(self: 'Entity') -> None:
+        """Run when entity about to be added to hass."""
+
     def __eq__(self, other):
         """Return the comparison."""
         if not isinstance(other, self.__class__):

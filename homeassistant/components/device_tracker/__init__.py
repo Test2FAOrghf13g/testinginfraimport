@@ -559,6 +559,7 @@ class Device(Entity):
 
     async def async_added_to_hass(self):
         """Add an entity."""
+        await super().async_added_to_hass()
         state = await async_get_last_state(self.hass, self.entity_id)
         if not state:
             return
