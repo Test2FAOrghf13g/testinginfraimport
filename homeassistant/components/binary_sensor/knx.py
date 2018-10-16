@@ -118,7 +118,6 @@ class KNXBinarySensor(BinarySensorDevice):
 
     async def async_added_to_hass(self):
         """Store register state change callback."""
-        await super().async_added_to_hass()
         self.async_register_callbacks()
 
     @property

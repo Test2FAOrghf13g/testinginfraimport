@@ -79,7 +79,6 @@ class WinkThermostat(WinkDevice, ClimateDevice):
 
     async def async_added_to_hass(self):
         """Call when entity is added to hass."""
-        await super().async_added_to_hass()
         self.hass.data[DOMAIN]['entities']['climate'].append(self)
 
     @property

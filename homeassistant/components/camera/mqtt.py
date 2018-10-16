@@ -91,8 +91,6 @@ class MqttCamera(Camera):
 
     async def async_added_to_hass(self):
         """Subscribe MQTT events."""
-        await super().async_added_to_hass()
-
         @callback
         def message_received(topic, payload, qos):
             """Handle new MQTT messages."""

@@ -61,7 +61,6 @@ class WinkSensorDevice(WinkDevice, Entity):
 
     async def async_added_to_hass(self):
         """Call when entity is added to hass."""
-        await super().async_added_to_hass()
         self.hass.data[DOMAIN]['entities']['sensor'].append(self)
 
     @property

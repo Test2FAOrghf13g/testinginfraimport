@@ -56,7 +56,6 @@ class Dyson360EyeDevice(VacuumDevice):
 
     async def async_added_to_hass(self):
         """Call when entity is added to hass."""
-        await super().async_added_to_hass()
         self.hass.async_add_job(
             self._device.add_message_listener, self.on_message)
 

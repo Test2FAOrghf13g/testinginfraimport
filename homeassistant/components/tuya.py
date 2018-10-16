@@ -124,7 +124,6 @@ class TuyaDevice(Entity):
 
     async def async_added_to_hass(self):
         """Call when entity is added to hass."""
-        await super().async_added_to_hass()
         dev_id = self.tuya.object_id()
         self.hass.data[DOMAIN]['entities'][dev_id] = self.entity_id
         async_dispatcher_connect(

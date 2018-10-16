@@ -34,7 +34,6 @@ class HomematicipGenericDevice(Entity):
 
     async def async_added_to_hass(self):
         """Register callbacks."""
-        await super().async_added_to_hass()
         self._device.on_update(self._device_changed)
 
     def _device_changed(self, *args, **kwargs):

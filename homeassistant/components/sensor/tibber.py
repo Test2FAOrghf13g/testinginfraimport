@@ -166,7 +166,6 @@ class TibberSensorRT(Entity):
 
     async def async_added_to_hass(self):
         """Start unavailability tracking."""
-        await super().async_added_to_hass()
         await self._tibber_home.rt_subscribe(self.hass.loop,
                                              self._async_callback)
 

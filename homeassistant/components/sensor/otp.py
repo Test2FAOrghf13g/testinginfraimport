@@ -55,7 +55,6 @@ class TOTPSensor(Entity):
 
     async def async_added_to_hass(self):
         """Handle when an entity is about to be added to Home Assistant."""
-        await super().async_added_to_hass()
         self._call_loop()
 
     @callback

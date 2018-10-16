@@ -200,5 +200,4 @@ class BMWConnectedDriveSensor(BinarySensorDevice):
 
         Show latest data after startup.
         """
-        await super().async_added_to_hass()
         self._account.add_update_listener(self.update_callback)

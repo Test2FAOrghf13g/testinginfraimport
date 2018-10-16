@@ -105,8 +105,6 @@ class MiFloraSensor(Entity):
 
     async def async_added_to_hass(self):
         """Set initial state."""
-        await super().async_added_to_hass()
-
         @callback
         def on_startup(_):
             self.async_schedule_update_ha_state(True)

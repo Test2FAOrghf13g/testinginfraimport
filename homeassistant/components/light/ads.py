@@ -51,8 +51,6 @@ class AdsLight(Light):
 
     async def async_added_to_hass(self):
         """Register device notification."""
-        await super().async_added_to_hass()
-
         def update_on_state(name, value):
             """Handle device notifications for state."""
             _LOGGER.debug('Variable %s changed its value to %d', name, value)

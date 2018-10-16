@@ -130,7 +130,6 @@ class UpCloudServerEntity(Entity):
 
     async def async_added_to_hass(self):
         """Register callbacks."""
-        await super().async_added_to_hass()
         async_dispatcher_connect(
             self.hass, SIGNAL_UPDATE_UPCLOUD, self._update_callback)
 

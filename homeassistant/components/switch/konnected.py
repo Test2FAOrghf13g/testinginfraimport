@@ -109,5 +109,4 @@ class KonnectedSwitch(ToggleEntity):
 
     async def async_added_to_hass(self):
         """Store entity_id."""
-        await super().async_added_to_hass()
         self._data['entity_id'] = self.entity_id

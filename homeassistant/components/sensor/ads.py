@@ -63,8 +63,6 @@ class AdsSensor(Entity):
 
     async def async_added_to_hass(self):
         """Register device notification."""
-        await super().async_added_to_hass()
-
         def update(name, value):
             """Handle device notifications."""
             _LOGGER.debug("Variable %s changed its value to %d", name, value)

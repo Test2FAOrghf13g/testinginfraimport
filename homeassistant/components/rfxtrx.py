@@ -317,7 +317,6 @@ class RfxtrxDevice(Entity):
 
     async def async_added_to_hass(self):
         """Subscribe RFXtrx events."""
-        await super().async_added_to_hass()
         self.added_to_hass = True
 
     @property

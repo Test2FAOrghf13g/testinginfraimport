@@ -140,7 +140,6 @@ class EmbyDevice(MediaPlayerDevice):
 
     async def async_added_to_hass(self):
         """Register callback."""
-        await super().async_added_to_hass()
         self.emby.add_update_callback(
             self.async_update_callback, self.device_id)
 

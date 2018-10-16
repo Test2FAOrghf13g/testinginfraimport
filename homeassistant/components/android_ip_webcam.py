@@ -254,8 +254,6 @@ class AndroidIPCamEntity(Entity):
 
     async def async_added_to_hass(self):
         """Register update dispatcher."""
-        await super().async_added_to_hass()
-
         @callback
         def async_ipcam_update(host):
             """Update callback."""

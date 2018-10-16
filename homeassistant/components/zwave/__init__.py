@@ -986,7 +986,6 @@ class ZWaveDeviceEntity(ZWaveBaseEntity):
 
     async def async_added_to_hass(self):
         """Add device to dict."""
-        await super().async_added_to_hass()
         async_dispatcher_connect(
             self.hass,
             SIGNAL_REFRESH_ENTITY_FORMAT.format(self.entity_id),

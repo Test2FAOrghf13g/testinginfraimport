@@ -186,7 +186,6 @@ class RainMachineProgram(RainMachineSwitch):
 
     async def async_added_to_hass(self):
         """Register callbacks."""
-        await super().async_added_to_hass()
         async_dispatcher_connect(
             self.hass, PROGRAM_UPDATE_TOPIC, self._program_updated)
 
@@ -252,7 +251,6 @@ class RainMachineZone(RainMachineSwitch):
 
     async def async_added_to_hass(self):
         """Register callbacks."""
-        await super().async_added_to_hass()
         async_dispatcher_connect(
             self.hass, PROGRAM_UPDATE_TOPIC, self._program_updated)
         async_dispatcher_connect(

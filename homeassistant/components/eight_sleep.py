@@ -192,8 +192,6 @@ class EightSleepUserEntity(Entity):
 
     async def async_added_to_hass(self):
         """Register update dispatcher."""
-        await super().async_added_to_hass()
-
         @callback
         def async_eight_user_update():
             """Update callback."""
@@ -217,8 +215,6 @@ class EightSleepHeatEntity(Entity):
 
     async def async_added_to_hass(self):
         """Register update dispatcher."""
-        await super().async_added_to_hass()
-
         @callback
         def async_eight_heat_update():
             """Update callback."""

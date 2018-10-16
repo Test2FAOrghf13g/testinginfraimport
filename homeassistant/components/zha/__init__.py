@@ -374,7 +374,6 @@ class Entity(entity.Entity):
 
         It is now safe to update the entity state
         """
-        await super().async_added_to_hass()
         for cluster_id, cluster in self._in_clusters.items():
             cluster.add_listener(self._in_listeners.get(cluster_id, self))
         for cluster_id, cluster in self._out_clusters.items():

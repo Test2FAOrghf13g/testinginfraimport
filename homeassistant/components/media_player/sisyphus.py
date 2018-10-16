@@ -51,7 +51,6 @@ class SisyphusPlayer(MediaPlayerDevice):
 
     async def async_added_to_hass(self):
         """Add listeners after this object has been initialized."""
-        await super().async_added_to_hass()
         self._table.add_listener(
             lambda: self.async_schedule_update_ha_state(False))
 

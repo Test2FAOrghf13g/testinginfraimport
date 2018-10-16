@@ -75,7 +75,6 @@ class WirelessTagSensor(WirelessTagBaseSensor):
 
     async def async_added_to_hass(self):
         """Register callbacks."""
-        await super().async_added_to_hass()
         async_dispatcher_connect(
             self.hass,
             SIGNAL_TAG_UPDATE.format(self.tag_id, self.tag_manager_mac),

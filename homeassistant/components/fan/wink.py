@@ -34,7 +34,6 @@ class WinkFanDevice(WinkDevice, FanEntity):
 
     async def async_added_to_hass(self):
         """Call when entity is added to hass."""
-        await super().async_added_to_hass()
         self.hass.data[DOMAIN]['entities']['fan'].append(self)
 
     def set_direction(self, direction: str) -> None:

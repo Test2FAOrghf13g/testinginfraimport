@@ -153,7 +153,6 @@ class HarmonyRemote(remote.RemoteDevice):
 
     async def async_added_to_hass(self):
         """Complete the initialization."""
-        await super().async_added_to_hass()
         self.hass.bus.async_listen_once(
             EVENT_HOMEASSISTANT_STOP,
             lambda event: self._client.disconnect(wait=True))

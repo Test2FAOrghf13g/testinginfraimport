@@ -262,7 +262,6 @@ class AbodeDevice(Entity):
 
     async def async_added_to_hass(self):
         """Subscribe Abode events."""
-        await super().async_added_to_hass()
         self.hass.async_add_job(
             self._data.abode.events.add_device_callback,
             self._device.device_id, self._update_callback
@@ -309,7 +308,6 @@ class AbodeAutomation(Entity):
 
     async def async_added_to_hass(self):
         """Subscribe Abode events."""
-        await super().async_added_to_hass()
         if self._event:
             self.hass.async_add_job(
                 self._data.abode.events.add_event_callback,

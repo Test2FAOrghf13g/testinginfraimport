@@ -70,7 +70,6 @@ class KonnectedBinarySensor(BinarySensorDevice):
 
     async def async_added_to_hass(self):
         """Store entity_id and register state change callback."""
-        await super().async_added_to_hass()
         self._data[ATTR_ENTITY_ID] = self.entity_id
         async_dispatcher_connect(
             self.hass, SIGNAL_SENSOR_UPDATE.format(self.entity_id),

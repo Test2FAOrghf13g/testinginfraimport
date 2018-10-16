@@ -838,8 +838,6 @@ class MqttAvailability(Entity):
 
         This method must be run in the event loop and returns a coroutine.
         """
-        await super().async_added_to_hass()
-
         @callback
         def availability_message_received(topic: str,
                                           payload: SubscribePayloadType,
@@ -873,7 +871,6 @@ class MqttDiscoveryUpdate(Entity):
 
     async def async_added_to_hass(self) -> None:
         """Subscribe to discovery updates."""
-        await super().async_added_to_hass()
         from homeassistant.helpers.dispatcher import async_dispatcher_connect
         from homeassistant.components.mqtt.discovery import (
             ALREADY_DISCOVERED, MQTT_DISCOVERY_UPDATED)

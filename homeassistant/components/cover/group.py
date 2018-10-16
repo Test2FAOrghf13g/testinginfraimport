@@ -110,7 +110,6 @@ class CoverGroup(CoverDevice):
 
     async def async_added_to_hass(self):
         """Register listeners."""
-        await super().async_added_to_hass()
         for entity_id in self._entities:
             new_state = self.hass.states.get(entity_id)
             self.update_supported_features(entity_id, None, new_state,

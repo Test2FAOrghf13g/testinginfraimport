@@ -166,7 +166,6 @@ class DlnaDmrDevice(MediaPlayerDevice):
 
     async def async_added_to_hass(self):
         """Handle addition."""
-        await super().async_added_to_hass()
         self._device.on_event = self._on_event
 
         # Register unsubscribe on stop

@@ -365,7 +365,6 @@ class SonosDevice(MediaPlayerDevice):
 
     async def async_added_to_hass(self):
         """Subscribe sonos events."""
-        await super().async_added_to_hass()
         self.hass.data[DATA_SONOS].devices.append(self)
         self.hass.async_add_executor_job(self._subscribe_to_player_events)
 

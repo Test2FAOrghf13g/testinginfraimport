@@ -108,7 +108,6 @@ class RussoundZoneDevice(MediaPlayerDevice):
 
     async def async_added_to_hass(self):
         """Register callback handlers."""
-        await super().async_added_to_hass()
         self._russ.add_zone_callback(self._zone_callback_handler)
         self._russ.add_source_callback(self._source_callback_handler)
 

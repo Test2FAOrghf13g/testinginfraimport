@@ -29,7 +29,6 @@ class IHCDevice(Entity):
 
     async def async_added_to_hass(self):
         """Add callback for IHC changes."""
-        await super().async_added_to_hass()
         self.ihc_controller.add_notify_event(
             self.ihc_id, self.on_ihc_change, True)
 

@@ -51,7 +51,6 @@ class EnvisalinkSensor(EnvisalinkDevice, Entity):
 
     async def async_added_to_hass(self):
         """Register callbacks."""
-        await super().async_added_to_hass()
         async_dispatcher_connect(
             self.hass, SIGNAL_KEYPAD_UPDATE, self._update_callback)
         async_dispatcher_connect(

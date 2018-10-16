@@ -246,7 +246,6 @@ class Plant(Entity):
 
     async def async_added_to_hass(self):
         """After being added to hass, load from history."""
-        await super().async_added_to_hass()
         if ENABLE_LOAD_HISTORY and 'recorder' in self.hass.config.components:
             # only use the database if it's configured
             self.hass.async_add_job(self._load_history_from_db)

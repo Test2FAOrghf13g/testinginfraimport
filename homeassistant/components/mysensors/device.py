@@ -103,7 +103,6 @@ class MySensorsEntity(MySensorsDevice, Entity):
 
     async def async_added_to_hass(self):
         """Register update callback."""
-        await super().async_added_to_hass()
         dev_id = id(self.gateway), self.node_id, self.child_id, self.value_type
         async_dispatcher_connect(
             self.hass, SIGNAL_CALLBACK.format(*dev_id),

@@ -109,8 +109,6 @@ class BinarySensorTemplate(BinarySensorDevice):
 
     async def async_added_to_hass(self):
         """Register callbacks."""
-        await super().async_added_to_hass()
-
         @callback
         def template_bsensor_state_listener(entity, old_state, new_state):
             """Handle the target device state changes."""

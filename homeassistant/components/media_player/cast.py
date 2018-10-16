@@ -333,8 +333,6 @@ class CastDevice(MediaPlayerDevice):
 
     async def async_added_to_hass(self):
         """Create chromecast object when added to hass."""
-        await super().async_added_to_hass()
-
         @callback
         def async_cast_discovered(discover: ChromecastInfo):
             """Handle discovery of new Chromecast."""

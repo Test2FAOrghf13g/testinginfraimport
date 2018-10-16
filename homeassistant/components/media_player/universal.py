@@ -101,8 +101,6 @@ class UniversalMediaPlayer(MediaPlayerDevice):
 
         This method must be run in the event loop and returns a coroutine.
         """
-        await super().async_added_to_hass()
-
         @callback
         def async_on_dependency_update(*_):
             """Update ha state when dependencies update."""

@@ -159,7 +159,6 @@ class TellstickDevice(Entity):
 
     async def async_added_to_hass(self):
         """Register callbacks."""
-        await super().async_added_to_hass()
         self.hass.helpers.dispatcher.async_dispatcher_connect(
             SIGNAL_TELLCORE_CALLBACK,
             self.update_from_callback

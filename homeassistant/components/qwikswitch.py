@@ -80,7 +80,6 @@ class QSEntity(Entity):
 
     async def async_added_to_hass(self):
         """Listen for updates from QSUSb via dispatcher."""
-        await super().async_added_to_hass()
         self.hass.helpers.dispatcher.async_dispatcher_connect(
             self.qsid, self.update_packet)
 

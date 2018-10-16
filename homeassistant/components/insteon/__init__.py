@@ -504,7 +504,6 @@ class InsteonEntity(Entity):
 
     async def async_added_to_hass(self):
         """Register INSTEON update events."""
-        await super().async_added_to_hass()
         _LOGGER.debug('Tracking updates for device %s group %d statename %s',
                       self.address, self.group,
                       self._insteon_device_state.name)

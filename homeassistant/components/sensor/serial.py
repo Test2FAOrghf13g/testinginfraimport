@@ -67,7 +67,6 @@ class SerialSensor(Entity):
 
     async def async_added_to_hass(self):
         """Handle when an entity is about to be added to Home Assistant."""
-        await super().async_added_to_hass()
         self._serial_loop_task = self.hass.loop.create_task(
             self.serial_read(self._port, self._baudrate))
 

@@ -161,7 +161,6 @@ class WemoDimmer(Light):
 
     async def async_added_to_hass(self):
         """Register update callback."""
-        await super().async_added_to_hass()
         wemo = self.hass.components.wemo
         # The register method uses a threading condition, so call via executor.
         # and await to wait until the task is done.

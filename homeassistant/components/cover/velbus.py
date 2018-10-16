@@ -71,8 +71,6 @@ class VelbusCover(CoverDevice):
 
     async def async_added_to_hass(self):
         """Add listener for Velbus messages on bus."""
-        await super().async_added_to_hass()
-
         def _init_velbus():
             """Initialize Velbus on startup."""
             self._velbus.subscribe(self._on_message)

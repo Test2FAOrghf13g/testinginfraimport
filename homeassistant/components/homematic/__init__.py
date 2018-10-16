@@ -720,7 +720,6 @@ class HMDevice(Entity):
 
     async def async_added_to_hass(self):
         """Load data init callbacks."""
-        await super().async_added_to_hass()
         await self.hass.async_add_job(self.link_homematic)
 
     @property

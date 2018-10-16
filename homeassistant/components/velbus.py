@@ -100,7 +100,6 @@ class VelbusEntity(Entity):
 
     async def async_added_to_hass(self):
         """Add listener for state changes."""
-        await super().async_added_to_hass()
         self._module.on_status_update(self._channel, self._on_update)
 
     def _on_update(self, state):

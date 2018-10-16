@@ -93,7 +93,6 @@ class NukiLock(LockDevice):
 
     async def async_added_to_hass(self):
         """Call when entity is added to hass."""
-        await super().async_added_to_hass()
         if NUKI_DATA not in self.hass.data:
             self.hass.data[NUKI_DATA] = {}
         if DOMAIN not in self.hass.data[NUKI_DATA]:
