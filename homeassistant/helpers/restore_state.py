@@ -1,4 +1,5 @@
 """Support for restoring entity states on startup."""
+import asyncio
 import logging
 from datetime import timedelta
 from typing import Any, Dict, List, Optional  # noqa  pylint_disable=unused-import
@@ -115,14 +116,17 @@ class RestoreEntity(Entity):
 
     async def async_added_to_hass(self: 'RestoreEntity') -> None:
         """Register this entity as a restorable entity."""
-        await super().async_added_to_hass()
-        data = await RestoreStateData.async_get_instance(self.hass)
+        _, data = await asyncio.gather(
+            super().async_added_to_hass(),
+            RestoreStateData.async_get_instance(self.hass),
+        )
         data.async_register_entity(self)
 
     async def async_get_last_state(self: 'RestoreEntity') -> Optional[State]:
         """Get the entity state from the previous run."""
         if self.hass is None or self.entity_id is None:
             # Return None if this entity isn't added to hass yet
+            _LOGGER.warning("Cannot get last state. Entity not added to hass")
             return None
         data = await RestoreStateData.async_get_instance(self.hass)
         return data.last_states.get(self.entity_id)

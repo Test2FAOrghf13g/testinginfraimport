@@ -388,7 +388,7 @@ class Entity:
 
         self.hass.async_create_task(readd())
 
-    async def async_added_to_hass(self: 'Entity') -> None:
+    async def async_added_to_hass(self) -> None:
         """Run when entity about to be added to hass."""
 
     def __eq__(self, other):
