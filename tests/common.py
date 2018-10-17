@@ -6,7 +6,6 @@ import functools as ft
 import json
 import os
 import sys
-from typing import Dict
 from unittest.mock import patch, MagicMock, Mock
 from io import StringIO
 import logging
@@ -160,42 +159,6 @@ async def async_test_home_assistant(loop):
     hass.config_entries = config_entries.ConfigEntries(hass, {})
     hass.config_entries._entries = []
     hass.config_entries._store._async_ensure_stop_listener = lambda: None
-
-    store_data = {}  # type: Dict[str, State]
-
-    orig_load = storage.Store._async_load
-
-    class MockStore(restore_state.Store):
-        """Mock store class, so no actual states are written for tests."""
-
-        async def _async_load(self):
-            """Mock version of load."""
-            if self._data is None:
-                # No data to load
-                if self.key not in store_data:
-                    return None
-
-                mock_data = store_data.get(self.key)
-
-                if 'data' not in mock_data or 'version' not in mock_data:
-                    _LOGGER.error('Mock data needs "version" and "data"')
-                    raise ValueError('Mock data needs "version" and "data"')
-
-                self._data = mock_data
-
-            # Route through original load so that we trigger migration
-            loaded = await orig_load(self)
-            _LOGGER.info('Loading data for %s: %s', self.key, loaded)
-            return loaded
-
-        def _write_data(self, path: str, data: Dict):
-            """Mock version of write data."""
-            _LOGGER.info('Writing data to %s: %s', self.key, data)
-            # To ensure that the data can be serialized
-            store_data[self.key] = json.loads(json.dumps(
-                data, cls=self._encoder))
-
-    restore_state.Store = MockStore
 
     hass.state = ha.CoreState.running
 
