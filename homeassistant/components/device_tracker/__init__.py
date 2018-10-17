@@ -22,6 +22,7 @@ from homeassistant.components.zone.zone import async_active_zone
 from homeassistant.config import load_yaml_config_file, async_log_exception
 from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers import config_per_platform, discovery
+from homeassistant.helpers.entity import Entity
 from homeassistant.helpers.event import async_track_time_interval
 from homeassistant.helpers.restore_state import RestoreEntity
 from homeassistant.helpers.typing import GPSType, ConfigType, HomeAssistantType
@@ -394,7 +395,7 @@ class DeviceTracker:
             await asyncio.wait(tasks, loop=self.hass.loop)
 
 
-class Device(RestoreEntity):
+class Device(Entity, RestoreEntity):
     """Represent a tracked device."""
 
     host_name = None  # type: str

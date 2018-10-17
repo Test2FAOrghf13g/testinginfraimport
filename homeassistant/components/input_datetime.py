@@ -11,6 +11,7 @@ import voluptuous as vol
 
 from homeassistant.const import ATTR_ENTITY_ID, CONF_ICON, CONF_NAME
 import homeassistant.helpers.config_validation as cv
+from homeassistant.helpers.entity import Entity
 from homeassistant.helpers.entity_component import EntityComponent
 from homeassistant.helpers.restore_state import RestoreEntity
 from homeassistant.util import dt as dt_util
@@ -96,7 +97,7 @@ async def async_setup(hass, config):
     return True
 
 
-class InputDatetime(RestoreEntity):
+class InputDatetime(Entity, RestoreEntity):
     """Representation of a datetime input."""
 
     def __init__(self, object_id, name, has_date, has_time, icon, initial):

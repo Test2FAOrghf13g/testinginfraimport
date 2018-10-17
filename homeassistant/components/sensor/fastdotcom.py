@@ -10,6 +10,7 @@ import voluptuous as vol
 
 from homeassistant.components.sensor import DOMAIN, PLATFORM_SCHEMA
 import homeassistant.helpers.config_validation as cv
+from homeassistant.helpers.entity import Entity
 from homeassistant.helpers.event import track_time_change
 from homeassistant.helpers.restore_state import RestoreEntity
 import homeassistant.util.dt as dt_util
@@ -50,7 +51,7 @@ def setup_platform(hass, config, add_entities, discovery_info=None):
     hass.services.register(DOMAIN, 'update_fastdotcom', update)
 
 
-class SpeedtestSensor(RestoreEntity):
+class SpeedtestSensor(Entity, RestoreEntity):
     """Implementation of a FAst.com sensor."""
 
     def __init__(self, speedtest_data):
