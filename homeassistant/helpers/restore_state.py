@@ -66,7 +66,7 @@ class RestoreStateData():
 
         return await task
 
-    def __init__(self: 'RestoreStateData', hass: HomeAssistant) -> None:
+    def __init__(self, hass: HomeAssistant) -> None:
         """Initialize the restore state data class."""
         self.hass = hass  # type: HomeAssistant
         self.store = Store(hass, STORAGE_VERSION, STORAGE_KEY,
@@ -74,7 +74,7 @@ class RestoreStateData():
         self.last_states = {}  # type: Dict[str, State]
         self.entities = []  # type: List[RestoreEntity]
 
-    async def async_dump_states(self: 'RestoreStateData') -> None:
+    async def async_dump_states(self) -> None:
         """Save the current state machine to storage."""
         _LOGGER.debug("Dumping states")
         # Entity ID set of registered restorable entities to dump
@@ -87,7 +87,7 @@ class RestoreStateData():
             _LOGGER.error("Error saving current states", exc_info=exc)
 
     @callback
-    def async_setup_dump(self: 'RestoreStateData', *args: Any) -> None:
+    def async_setup_dump(self, *args: Any) -> None:
         """Set up the restore state listeners."""
         # Dump the initial states now. This helps minimize the risk of having
         # old states loaded by overwritting the last states once home assistant
@@ -106,15 +106,21 @@ class RestoreStateData():
 
     @callback
     def async_register_entity(
-            self: 'RestoreStateData', entity: 'RestoreEntity') -> None:
-        """Store this entities state when hass is shutdown."""
+            self, entity: 'RestoreEntity') -> None:
+        """Store this entity's state when hass is shutdown."""
         self.entities.append(entity)
+
+    @callback
+    def async_unregister_entity(
+            self, entity: 'RestoreEntity') -> None:
+        """Unregister this entity from saving state."""
+        self.entities.remove(entity)
 
 
 class RestoreEntity(Entity):
     """Mixin class for restoring previous entity state."""
 
-    async def async_added_to_hass(self: 'RestoreEntity') -> None:
+    async def async_added_to_hass(self) -> None:
         """Register this entity as a restorable entity."""
         _, data = await asyncio.gather(
             super().async_added_to_hass(),
@@ -122,7 +128,15 @@ class RestoreEntity(Entity):
         )
         data.async_register_entity(self)
 
-    async def async_get_last_state(self: 'RestoreEntity') -> Optional[State]:
+    async def async_will_remove_from_hass(self) -> None:
+        """Run when entity will be removed from hass."""
+        _, data = await asyncio.gather(
+            super().async_will_remove_from_hass(),
+            RestoreStateData.async_get_instance(self.hass),
+        )
+        data.async_unregister_entity(self)
+
+    async def async_get_last_state(self) -> Optional[State]:
         """Get the entity state from the previous run."""
         if self.hass is None or self.entity_id is None:
             # Return None if this entity isn't added to hass yet

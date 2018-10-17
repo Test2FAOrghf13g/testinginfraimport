@@ -292,6 +292,7 @@ class AutomationEntity(ToggleEntity, RestoreEntity):
 
     async def async_will_remove_from_hass(self):
         """Remove listeners when removing automation from HASS."""
+        await super().async_will_remove_from_hass()
         await self.async_turn_off()
 
     async def async_enable(self):

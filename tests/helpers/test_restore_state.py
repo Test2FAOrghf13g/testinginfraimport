@@ -122,6 +122,19 @@ async def test_dump_data(hass):
     assert written_states[0]['entity_id'] == 'input_boolean.b1'
     assert written_states[0]['state'] == 'on'
 
+    # Test that removed entities are not persisted
+    await entity.async_will_remove_from_hass()
+
+    with patch('homeassistant.helpers.restore_state.Store.async_save'
+               ) as mock_write_data, patch.object(
+                   hass.states, 'async_all', return_value=states):
+        await data.async_dump_states()
+
+    assert mock_write_data.called
+    args = mock_write_data.mock_calls[0][1]
+    written_states = args[0]
+    assert not written_states
+
 
 async def test_dump_error(hass):
     """Test that we cache data."""

@@ -388,8 +388,7 @@ class EntityPlatform:
         """Remove entity id from platform."""
         entity = self.entities.pop(entity_id)
 
-        if hasattr(entity, 'async_will_remove_from_hass'):
-            await entity.async_will_remove_from_hass()
+        await entity.async_will_remove_from_hass()
 
         self.hass.states.async_remove(entity_id)
 
