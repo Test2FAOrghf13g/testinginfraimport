@@ -11,7 +11,6 @@ import voluptuous as vol
 import homeassistant.helpers.config_validation as cv
 from homeassistant.const import (
     ATTR_ENTITY_ID, ATTR_UNIT_OF_MEASUREMENT, CONF_ICON, CONF_NAME, CONF_MODE)
-from homeassistant.helpers.entity import Entity
 from homeassistant.helpers.entity_component import EntityComponent
 from homeassistant.helpers.restore_state import RestoreEntity
 
@@ -104,7 +103,7 @@ async def async_setup(hass, config):
     return True
 
 
-class InputText(Entity, RestoreEntity):
+class InputText(RestoreEntity):
     """Represent a text box."""
 
     def __init__(self, object_id, name, initial, minimum, maximum, icon,

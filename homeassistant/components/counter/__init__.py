@@ -10,7 +10,6 @@ import voluptuous as vol
 
 from homeassistant.const import ATTR_ENTITY_ID, CONF_ICON, CONF_NAME
 import homeassistant.helpers.config_validation as cv
-from homeassistant.helpers.entity import Entity
 from homeassistant.helpers.entity_component import EntityComponent
 from homeassistant.helpers.restore_state import RestoreEntity
 
@@ -86,7 +85,7 @@ async def async_setup(hass, config):
     return True
 
 
-class Counter(Entity, RestoreEntity):
+class Counter(RestoreEntity):
     """Representation of a counter."""
 
     def __init__(self, object_id, name, initial, restore, step, icon):

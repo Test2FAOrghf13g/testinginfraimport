@@ -12,7 +12,6 @@ import voluptuous as vol
 import homeassistant.util.dt as dt_util
 import homeassistant.helpers.config_validation as cv
 from homeassistant.const import (ATTR_ENTITY_ID, CONF_ICON, CONF_NAME)
-from homeassistant.helpers.entity import Entity
 from homeassistant.helpers.entity_component import EntityComponent
 from homeassistant.helpers.event import async_track_point_in_utc_time
 from homeassistant.helpers.restore_state import RestoreEntity
@@ -98,7 +97,7 @@ async def async_setup(hass, config):
     return True
 
 
-class Timer(Entity, RestoreEntity):
+class Timer(RestoreEntity):
     """Representation of a timer."""
 
     def __init__(self, hass, object_id, name, icon, duration):
