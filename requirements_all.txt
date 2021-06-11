@@ -1540,7 +1540,7 @@ waterfurnace==0.7.0
 websocket-client==0.37.0
 
 # homeassistant.components.media_player.webostv
-websockets==6.0
+websockets==9.1
 
 # homeassistant.components.wirelesstag
 wirelesstagpy==0.4.0
